@@ -43,11 +43,18 @@ async function removeBlog(href, id) {
 
 async function findRemoveLinkBlog(href) {
     const regex = /-(\d+)\//gm;
-    const regexResult = regex.exec(href);
+    let regexResult = regex.exec(href);
 
     if (regexResult < 1) {
-        console.log(`ERR: wrong href (${href}`);
-        return;
+        const regexNoTitle = /\/(\d+)\//gm;
+        const regexNoTitleResult = regexNoTitle.exec(href);
+
+        if (regexNoTitleResult < 1) {
+            console.log(`ERR: wrong href (${href}`);
+            return;
+        }
+
+        regexResult = regexNoTitleResult;
     }
 
     const blogId = regexResult[1];
